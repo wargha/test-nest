@@ -1,0 +1,85 @@
+version: '3.8'  # Update this to the version you are using
+services:
+  nestjs_api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '3100:3100'
+    env_file:
+     - .env
+     
+    volumes:
+      - ./src:/usr/src/app/src
+
+  mysql_db: 
+    image: mysql
+    ports:
+      - '3306:3306'
+    environment:
+      - MYSQL_ROOT_PASSWORD=supersecretpassword
+      - MYSQL_DATABASE=test_db
+      - MYSQL_USER=test_user
+      - MYSQL_PASSWORD=test_db
+      - MYSQL_TCP_PORT=3306
+      
+
+
+
+
+
+# version: '3.7'
+# services:
+#   314plan-database:
+#     container_name: 314plan-database
+#     image: mariadb:10.6-focal
+#     restart: unless-stopped
+#     volumes:
+#       - ./database:/var/lib/mysql
+#       - ./local-dev/314plan-db:/docker-entrypoint-initdb.d
+#     networks:
+#       - 314plan
+#     environment:
+#       MARIADB_DATABASE: "314plan"
+#       MARIADB_USER: "314plan"
+#       MARIADB_PASSWORD: "secretpassword"
+#       MARIADB_ROOT_PASSWORD: "supersecretpassword"
+#     ports:
+#       - 127.0.0.1:3306:3306
+
+# 314plan-server:
+#     image: node:18-alpine
+#     container_name: 314plan-server
+#     # command: "sleep 100000" # use this line for initial setup, npm install && npm run build
+#     command: "npm run start:debug"
+# #    command: "npm run start:dev"
+#     working_dir: "/app"
+#     volumes:
+#       - ./:/app
+#     networks:
+#       - 314plan
+#     ports:
+#       - 127.0.0.1:3000:3000
+#     restart: unless-stopped
+#     env_file:
+#       - .env
+
+# nginx-reverse-proxy:
+#     container_name: nginx-reverse-proxy
+#     build:
+#       context: ./local-dev/
+#       dockerfile: Dockerfile-nginx
+#     restart: unless-stopped
+#     expose:
+#       - 80
+#       - 443
+#     networks:
+#       - 314plan
+#     depends_on:
+#       - 314plan-server
+#     ports:
+#       - 127.0.0.1:80:80
+#       - 127.0.0.1:443:443
+
+# networks:
+#   314plan:
